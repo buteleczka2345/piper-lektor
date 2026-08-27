@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Piper Polski Lektor & Tłumacz</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-weight: 600;
+      background: #1e293b;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .status-dot.online { background: #10b981; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .btn {
+      padding: 8px 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-toggle { background: #334155; color: #fff; }
+    .btn-toggle.active { background: #059669; }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 11px;
+      outline: none;
+    }
+    .slider-group {
+      margin-top: 6px;
+    }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+    .footer {
+      font-size: 10px;
+      color: #64748b;
+      text-align: center;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <span>🎙️ Piper Lektor</span>
+    </div>
+    <div class="status-badge" id="statusBadge">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Piper 8765</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <button id="toggleLektorBtn" class="btn btn-toggle">🔇 Lektor OFF</button>
+    <button id="testVoiceBtn" class="btn btn-primary">▶️ Test Głosu</button>
+  </div>
+
+  <!-- Voice Select Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>Głos lektora (Piper AI)</span>
+      <span id="activeVoiceName" style="color: #38bdf8;">Gosia</span>
+    </div>
+    <select id="voiceSelect">
+      <option value="gosia">Gosia (Żeński Polski)</option>
+      <option value="jarvis">Jarvis (Męski Energetyczny)</option>
+      <option value="bass">Bass (Niski Bas Kinowy)</option>
+      <option value="justyna">Justyna (Ciepły Narracyjny)</option>
+      <option value="meski">Męski WG (Lektor TV)</option>
+      <option value="zenski">Żeński WG (Spikerka)</option>
+      <option value="janusz">Janusz (Głęboki Kinowy)</option>
+    </select>
+  </div>
+
+  <!-- Sliders Card -->
+  <div class="card">
+    <div class="slider-group">
+      <div class="slider-label">
+        <span>Prędkość czytania</span>
+        <span id="speedLabel" style="color: #fff; font-weight: bold;">1.0x</span>
+      </div>
+      <input type="range" id="speedSlider" min="0.7" max="1.8" step="0.05" value="1.0" />
+    </div>
+
+    <div class="slider-group" style="margin-top: 8px;">
+      <div class="slider-label">
+        <span>Wyciszenie tła filmu (Ducking)</span>
+        <span id="duckLabel" style="color: #fff; font-weight: bold;">15%</span>
+      </div>
+      <input type="range" id="duckSlider" min="0.0" max="0.5" step="0.05" value="0.15" />
+    </div>
+  </div>
+
+  <!-- Censorship Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>Filtr Cenzury Wulgaryzmów</span>
+      <label style="cursor: pointer; display: flex; align-items: center; gap: 4px;">
+        <input type="checkbox" id="censorToggle" checked />
+        <span id="censorLabel" style="color: #10b981;">Włączony</span>
+      </label>
+    </div>
+    <select id="censorModeSelect">
+      <option value="remove">Usuń przekleństwa całkowicie</option>
+      <option value="replace">Zastąp gwiazdkami (k***a)</option>
+      <option value="beep">Wstaw dźwięk [BEEP]</option>
+      <option value="cenzura">Wypowiedz słowo 'cenzura'</option>
+    </select>
+  </div>
+
+  <div class="footer">
+    Obsługuje: YouTube, Netflix, Prime Video, iQIYI
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

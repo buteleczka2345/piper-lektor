@@ -1,0 +1,10 @@
+{
+  "name": "Tłumacz i Lektor na Żywo",
+  "description": "Tłumacz w czasie rzeczywistym z języka angielskiego na polski z lektorem głosowym, obsługą mikrofonu, napisów filmowych i filtracji wulgaryzmów.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Piper Polski Lektor & Tłumacz (Wszystkie Serwisy)",
+  "version": "1.0.0",
+  "description": "Polski lektor w locie na YouTube, Netflix, Prime Video, Amazon i iQIYI z syntezą głosu Piper i filtrem cenzury.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.netflix.com/*",
+    "*://*.primevideo.com/*",
+    "*://*.amazon.com/*",
+    "*://*.amazon.co.uk/*",
+    "*://*.amazon.de/*",
+    "*://*.iq.com/*",
+    "*://*.iqiyi.com/*",
+    "http://127.0.0.1:8765/*",
+    "https://translate.googleapis.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Piper Polski Lektor"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://*.netflix.com/*",
+        "*://*.primevideo.com/*",
+        "*://*.amazon.com/*",
+        "*://*.amazon.co.uk/*",
+        "*://*.amazon.de/*",
+        "*://*.iq.com/*",
+        "*://*.iqiyi.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
